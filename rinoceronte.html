@@ -2,24 +2,29 @@
         href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;500;700&display=swap"
         rel="stylesheet"><style>
         :root {
+            /* Light Theme (Paper) */
             --bg-color: #fdfbf7;
-            /* Warm Paper */
             --text-color: #2d2d2d;
-            /* Ink Black */
             --accent-color: #8b0000;
             /* Deep Red */
             --secondary-color: #555;
             --card-bg: #fff;
             --border-color: #e0e0e0;
+            --particle-color: rgba(0, 0, 0, 0.5);
+            --line-color: rgba(0, 0, 0, 0.1);
         }
 
         [data-theme="dark"] {
-            --bg-color: #1a1a1a;
+            /* Dark Theme (Midnight Library) */
+            --bg-color: #0f0f0f;
             --text-color: #e0e0e0;
-            --accent-color: #ff6b6b;
-            --secondary-color: #aaa;
-            --card-bg: #2a2a2a;
-            --border-color: #444;
+            --accent-color: #d4a373;
+            /* Gold/Latte for contrast */
+            --secondary-color: #a0a0a0;
+            --card-bg: #1a1a1a;
+            --border-color: #333;
+            --particle-color: rgba(255, 255, 255, 0.5);
+            --line-color: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -33,7 +38,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.8;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
         }
 
@@ -46,7 +51,6 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.5;
         }
 
         /* Header / Nav */
@@ -55,7 +59,7 @@
             text-align: center;
             position: relative;
             z-index: 2;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 40px;
         }
 
@@ -67,7 +71,7 @@
             text-transform: uppercase;
             margin-bottom: 10px;
             display: inline-block;
-            border-bottom: 4px solid var(--accent-color);
+            border-bottom: 3px solid var(--accent-color);
             padding-bottom: 5px;
         }
 
@@ -79,30 +83,37 @@
 
         /* Controls */
         .controls {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             display: flex;
             gap: 15px;
+            z-index: 1001;
         }
 
         button.control-btn {
-            background: none;
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             cursor: pointer;
             color: var(--text-color);
             font-family: 'Montserrat', sans-serif;
             font-weight: bold;
             transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
         }
 
         button.control-btn:hover {
             background: var(--accent-color);
-            color: white;
+            color: var(--bg-color);
             border-color: var(--accent-color);
+            transform: scale(1.1);
         }
 
         /* Profile Layout */
@@ -119,7 +130,8 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
+            animation: fadeIn 1.5s ease;
         }
 
         @media(min-width: 768px) {
@@ -132,61 +144,73 @@
         }
 
         .profile-img {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             object-fit: cover;
-            border-radius: 5px;
-            /* Slight round, mostly square */
-            box-shadow: 10px 10px 0 var(--accent-color);
-            margin-bottom: 20px;
+            border-radius: 4px;
+            box-shadow: 15px 15px 0 var(--accent-color);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+
+        .profile-img:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 17px 17px 0 var(--accent-color);
         }
 
         .profile-info h2 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
         }
 
         .metric {
             display: inline-block;
-            margin-right: 20px;
+            margin-right: 25px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .metric span {
             font-weight: 700;
             color: var(--text-color);
+            font-size: 1.1rem;
         }
 
         /* Grid System */
         .shelf-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
             border-left: 5px solid var(--accent-color);
-            padding-left: 15px;
+            padding-left: 20px;
+            animation: slideInLeft 1s ease;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 40px;
-            margin-bottom: 100px;
+            margin-bottom: 120px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
             overflow: hidden;
+            border-radius: 2px;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-color);
         }
 
         .card-img-container {
@@ -204,18 +228,17 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
-            filter: grayscale(20%);
-            /* Artistic touch */
+            transition: transform 0.8s ease;
+            filter: grayscale(30%);
         }
 
         .card:hover .card-img-container img {
-            transform: scale(1.05);
+            transform: scale(1.08);
             filter: grayscale(0%);
         }
 
         .card-body {
-            padding: 20px;
+            padding: 25px;
         }
 
         .card-caption {
@@ -225,60 +248,72 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            line-height: 1.6;
         }
 
         .read-more {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: var(--accent-color);
             font-weight: 700;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: margin-left 0.3s;
+        }
+
+        .card:hover .read-more {
+            margin-left: 5px;
         }
 
         /* Footer */
         footer {
             border-top: 1px solid var(--border-color);
-            padding: 40px;
+            padding: 60px 20px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--secondary-color);
+            background: var(--card-bg);
         }
 
-        /* Sales Popup - Minimal */
+        /* Sales Popup */
         .popup {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 350px;
+            bottom: 40px;
+            right: 40px;
+            width: 380px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 30px;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            padding: 35px;
             z-index: 1000;
             font-family: 'Montserrat', sans-serif;
             transform: translateY(150%);
-            transition: transform 0.5s ease;
-            box-shadow: 10px 10px 0 var(--text-color);
-            /* Brutalist shadow */
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 12px 12px 0 var(--text-color);
+            opacity: 0;
         }
 
         .popup.active {
             transform: translateY(0);
+            opacity: 1;
         }
 
         .popup h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 15px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
         }
 
         .popup p {
             font-family: 'Lora', serif;
-            font-size: 0.95rem;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
         }
 
         .popup-btn {
@@ -287,27 +322,60 @@
             background: var(--text-color);
             color: var(--bg-color);
             text-align: center;
-            padding: 12px;
+            padding: 15px;
             text-decoration: none;
             text-transform: uppercase;
             font-weight: 700;
-            margin-top: 10px;
-            transition: background 0.3s;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border: 1px solid var(--text-color);
         }
 
         .popup-btn:hover {
             background: var(--accent-color);
-            color: white;
+            border-color: var(--accent-color);
+            color: var(--bg-color);
         }
 
         .close-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            transition: color 0.3s;
         }
-    </style></head><body data-theme="light"><canvas id="dust-canvas"></canvas><div class="controls"><button class="control-btn" id="themeToggle" title="Toggle Theme">🌙</button><button class="control-btn" id="langToggle" title="Language">ES</button></div><header><div class="brand">Rinoceronte</div><div class="tagline">"Libros y Discos 📖💿"</div></header><div class="container"><section class="profile-section"><img src="assets/rinoceronte/profile.jpg" alt="Rinoceronte" class="profile-img"><div class="profile-info"><h2>About the Collection</h2><div style="margin-bottom: 20px;"><div class="metric"><span data-i18n="followers">Seguidores</span>: <span>7875</span></div><div class="metric"><span data-i18n="following">Siguiendo</span>: <span>1973</span></div></div><p>Libros y Discos 📖💿<br>¡Te esperamos en Coyoacán! Y<br>¡Sta. Maria la Ribera! Cedro 216 📍<br>CDMX 📍📚🦏<br>Envíos 🌎📦 ✉️</p></div></section><h3 class="shelf-title" data-i18n="shelf_title">Estantería Reciente</h3><div class="grid"><div class="card"><div class="card-img-container"><img src="assets/rinoceronte/post_0.jpg" alt="Item"></div><div class="card-body"><p class="card-caption">Holis,
+
+        .close-btn:hover {
+            color: var(--text-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style></head><body data-theme="dark"><canvas id="dust-canvas"></canvas><div class="controls"><button class="control-btn" id="themeToggle" title="Toggle Theme">☀️</button><button class="control-btn" id="langToggle" title="Language">ES</button></div><header><div class="brand">Rinoceronte</div><div class="tagline">"Libros y Discos 📖💿"</div></header><div class="container"><section class="profile-section"><img src="assets/rinoceronte/profile.jpg" alt="Rinoceronte" class="profile-img"><div class="profile-info"><h2>About the Collection</h2><div style="margin-bottom: 25px;"><div class="metric"><span data-i18n="followers">Seguidores</span>: <span id="followers-count">7875</span></div><div class="metric"><span data-i18n="following">Siguiendo</span>: <span>1973</span></div></div><p>Libros y Discos 📖💿<br>¡Te esperamos en Coyoacán! Y<br>¡Sta. Maria la Ribera! Cedro 216 📍<br>CDMX 📍📚🦏<br>Envíos 🌎📦 ✉️</p></div></section><h3 class="shelf-title" data-i18n="shelf_title">Estantería Reciente</h3><div class="grid"><div class="card"><div class="card-img-container"><img src="assets/rinoceronte/post_0.jpg" alt="Item"></div><div class="card-body"><p class="card-caption">Holis,
 estos días patrios 🇲🇽estaremos abiertos por si quieren venir a revisar 👀nuestros libreros📚o por algún disco 💽.
 Mañana lunes 15 abrimos en horario normal de 10 am a 8 pm y el martes 16 de 12 a 6 pm.
 ¡Por acá los esperamos! 
@@ -359,7 +427,8 @@ El inicio de la filosofía occidental. Interpretación de Anaximandro y de Parm�
 $550 
 
 Después de «Ser y tiempo», Martin Heidegger encontró en los griegos la inspiración de su «camino del pensar». No solo rememoraba así la vuelta a Grecia de un Friedrich Hölderlin, sino que adoptaba el gesto radical de Friedrich Nietzsche, quien buscó recuperar la filosofía trágica de los griegos anterior a Sócrates. En los presocráticos verá también Heidegger esa alba de la filosofía cuya comprensión del mundo y del lenguaje fue olvidada por la metafísica occidental. Las lecciones aquí editadas fueron impartidas en el semestre de verano de 1932. En ellas, al hilo de los fragmentos, se da una interpretación de dos de los pensadores presocráticos más significativos en «el comienzo de la filosofía occidental». La célebre «Sentencia de Anaximandro» y el no menos famoso «Poema de Parménides» son textos fundacionales del discurso filosófico en los que ocupan un lugar central, por primera vez, nociones como Justicia, Verdad o Ser.</p><a href="#" class="read-more" data-i18n="details">Ver Solapa &rarr;</a></div></div></div></div><footer><p>&copy; 2026 Rinoceronte. <span data-i18n="footer_credits">Curado digitalmente.</span></p></footer><div class="popup" id="salesPopup"><span class="close-btn" id="closePopup">&times;</span><h3 data-i18n="popup_title">¿Tienes una Librería?</h3><p data-i18n="popup_body">Convierte tu catálogo en una experiencia digital. Ideal para librerías, tiendas de
-            discos y coleccionistas.</p><a href="#" class="popup-btn" data-i18n="popup_cta">Digitaliza tu Pasión</a></div><script>
+            discos y coleccionistas.</p><a href="https://wa.me/521XXXXXXXXXX?text=Me%20interesa%20la%20web" target="_blank" class="popup-btn"
+            data-i18n="popup_cta">Digitaliza tu Pasión</a></div><script>
         // Translations
         const translations = {
             'es': {
@@ -417,11 +486,12 @@ Después de «Ser y tiempo», Martin Heidegger encontró en los griegos la inspi
             document.getElementById('salesPopup').classList.remove('active');
         });
 
-        // Dust Particle Logic
+        // Interactive "Dust & Threads" Particle Logic
         const canvas = document.getElementById('dust-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
+        let mouse = { x: null, y: null };
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -433,21 +503,24 @@ Después de «Ser y tiempo», Martin Heidegger encontró en los griegos la inspi
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
-                this.alpha = Math.random() * 0.5;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.size = Math.random() * 2.5;
+                this.alpha = Math.random() * 0.6;
             }
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
             }
             draw() {
-                ctx.fillStyle = \`rgba(100, 100, 100, \${this.alpha})\`;
+                // Get colors from CSS vars
+                const style = getComputedStyle(document.body);
+                ctx.fillStyle = style.getPropertyValue('--particle-color').trim();
+
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -456,14 +529,41 @@ Después de «Ser y tiempo», Martin Heidegger encontró en los griegos la inspi
 
         function initParticles() {
             particles = [];
-            for(let i=0; i<150; i++) particles.push(new Particle());
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
         }
 
         function animate() {
-            ctx.clearRect(0,0,width,height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            ctx.clearRect(0, 0, width, height);
+
+            const style = getComputedStyle(document.body);
+            const lineColor = style.getPropertyValue('--line-color').trim();
+
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+
+                // Connect to mouse
+                if (mouse.x) {
+                    const dx = mouse.x - p.x;
+                    const dy = mouse.y - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = lineColor;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            });
             requestAnimationFrame(animate);
         }
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
 
         window.addEventListener('resize', resize);
         resize();
