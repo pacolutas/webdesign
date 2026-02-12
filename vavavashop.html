@@ -1,0 +1,366 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /><title>Vavava Shop | vavavashop</title><script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400&display=swap"
+        rel="stylesheet"><style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            color: #FFFFFF;
+            font-family: 'Poppins', sans-serif;
+            touch-action: none;
+            -webkit-font-smoothing: antialiased;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+        }
+
+        .nav-link {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            cursor: inherit;
+            pointer-events: auto;
+            transition: transform 0.2s ease-out, opacity 0.2s;
+            opacity: 0.9;
+            position: relative;
+            padding: 10px;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+        }
+
+        .social-link {
+            cursor: inherit;
+            opacity: 0.8;
+            transition: transform 0.2s ease-out, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+        }
+
+        .arg-toggle {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            cursor: inherit;
+            transition: opacity 0.3s;
+        }
+
+        .arg-toggle:hover {
+            opacity: 0.7;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+        }
+
+        /* SALES POPUP STYLES (Standardized) */
+        .sales-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            z-index: 10000;
+            font-family: 'Poppins', sans-serif;
+            animation: slideIn 0.5s ease-out forwards;
+            display: none;
+            /* Initially hidden */
+        }
+
+        .sales-popup h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .sales-popup p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .sales-price {
+            font-size: 1.5rem;
+            color: #222;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .sales-price small {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .sales-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: background 0.3s;
+        }
+
+        .sales-btn:hover {
+            background-color: #333;
+        }
+
+        .sales-btn.secondary {
+            background-color: transparent;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .sales-btn.secondary:hover {
+            background-color: #f5f5f5;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style></head><body><div id="root"></div><div class="sales-popup" id="salesPopup"><span class="close-popup" onclick="document.getElementById('salesPopup').style.display='none'">&times;</span><h3>Increíble Web para tu Negocio</h3><p>Hola <strong>Vavava Shop</strong>, hemos analizado tu perfil y vemos el potencial de tu marca. Una web
+            profesional como esta aumenta tus reservas y credibilidad.</p><div class="sales-price">
+            $3,000 MXN <small>$3,500</small></div><p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">
+            ✅ Hosting Incluido<br>
+            ✅ 2 Revisiones<br>
+            ❌ Dominio no incluido
+        </p><p style="font-size: 0.85rem; color: #28a745; margin-bottom: 20px; font-weight: bold;">
+            🎁 $500 OFF si nos recomiendas!
+        </p><a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20la%20página%20web%20para%20vavavashop"
+            target="_blank" class="sales-btn">⚡ Obtener esta Web Ahora</a><a href="https://websperronas.mx" target="_blank" class="sales-btn secondary">Nuestro Portafolio</a></div><script type="module">
+        import React from 'https://esm.sh/react@18.3.1';
+        import ReactDOM from 'https://esm.sh/react-dom@18.3.1/client';
+
+        const { useRef, useEffect, useState } = React;
+
+        // --- ICONOS DE SECCIONES (Simple Placeholders for now) ---
+        const LinkIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512", ...props }, React.createElement('path', { fill: "currentColor", d: "M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.99 74.267-2.28 101.961 29.352 29.352 75.3 26.519 104.226-2.408l67.2-67.2c27.993-27.993 27.993-73.452 0-101.445-5.877-5.877-13.682-9.115-21.996-9.115-8.314 0-16.119 3.238-21.996 9.115l-17.519 17.519c-9.764 9.764-25.592 9.764-35.355 0-9.763-9.763-9.763-25.592 0-35.355l17.519-17.519c11.754-11.754 27.359-18.225 43.953-18.225 16.594 0 32.199 6.471 43.953 18.225 35.539 35.539 35.539 93.243-.001 128.784zM470.535 41.257l-67.2-67.2c-59.27-59.27-155.699-59.27-214.96 0-9.764 9.764-9.764 25.592 0 35.355 9.763 9.763 25.592 9.763 35.355 0 26.711-26.711 72.844-27.701 101.96-2.279l13.087 13.087c4.35 4.35 5.769 10.79 3.783 16.612-5.864 17.194-9.042 34.999-9.69 52.721-.508 13.906-17.454 20.446-27.294 10.606l-37.106-37.106c-59.271-59.259-59.271-155.699-.001-214.959z" }));
+
+        const sections = {
+            home: { title: "VAVAVASHOP" },
+        };
+
+        
+
+        const socialLinks = [
+            { url: 'https://instagram.com/vavavashop', icon: LinkIcon }, // Fallback icon
+        ];
+
+        // --- IMÁGENES (Dynaimc from Jinja) ---
+        // Background Set 1: Profile Pic + Post 0
+        const BG_SET_1 = 'assets/vavavashop/profile.jpg';
+        const REV_SET_1 = 'assets/vavavashop/post_0.jpg';
+
+        // Background Set 2: Post 1 + Post 2
+        const BG_SET_2 = 'assets/vavavashop/post_1.jpg';
+        const REV_SET_2 = 'assets/vavavashop/post_2.jpg';
+
+        // --- APP ---
+        const App = () => {
+            const revealedLayerRef = useRef(null);
+            const [bgIndex, setBgIndex] = useState(0);
+
+            // CONFIGURACIÓN DE FÍSICA MEJORADA (LÍQUIDA)
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+            // Estela más larga para efecto líquido
+            const TRAIL_LENGTH = isMobile ? 6 : 12;
+            // Radio ligeramente mayor
+            const BASE_RADIUS = isMobile ? 140 : 200;
+
+            const points = useRef(Array(TRAIL_LENGTH).fill({ x: window.innerWidth / 2, y: window.innerHeight / 2 }));
+            const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+
+            // Selección de imágenes según el estado
+            const currentBg = bgIndex === 0 ? BG_SET_1 : BG_SET_2;
+            const currentRev = bgIndex === 0 ? REV_SET_1 : REV_SET_2;
+
+            const toggleBackground = () => {
+                setBgIndex(prev => prev === 0 ? 1 : 0);
+            };
+
+            useEffect(() => {
+                const handleMove = (e) => {
+                    let clientX, clientY;
+                    if (e.touches && e.touches.length > 0) {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    } else {
+                        clientX = e.clientX;
+                        clientY = e.clientY;
+                    }
+                    mouse.current = { x: clientX, y: clientY };
+                };
+
+                window.addEventListener('mousemove', handleMove);
+                window.addEventListener('touchstart', handleMove, { passive: false });
+                window.addEventListener('touchmove', handleMove, { passive: false });
+
+                let animationFrameId;
+
+                const loop = () => {
+                    const currentPoints = [...points.current];
+
+                    // Líder (puntero) rápido
+                    const leaderEasing = 0.15;
+                    currentPoints[0] = {
+                        x: currentPoints[0].x + (mouse.current.x - currentPoints[0].x) * leaderEasing,
+                        y: currentPoints[0].y + (mouse.current.y - currentPoints[0].y) * leaderEasing
+                    };
+
+                    // Estela más suave (viscosidad)
+                    const trailEasing = 0.20;
+                    for (let i = 1; i < TRAIL_LENGTH; i++) {
+                        const leader = currentPoints[i - 1];
+                        const follower = currentPoints[i];
+                        currentPoints[i] = {
+                            x: follower.x + (leader.x - follower.x) * trailEasing,
+                            y: follower.y + (leader.y - follower.y) * trailEasing
+                        };
+                    }
+
+                    points.current = currentPoints;
+
+                    if (revealedLayerRef.current) {
+                        const gradients = currentPoints.map((p, i) => {
+                            // Decaimiento optimizado para estelas largas
+                            const scale = 1 - (i / TRAIL_LENGTH) * 0.7;
+                            const radius = BASE_RADIUS * scale;
+                            return `radial-gradient(circle ${radius}px at ${p.x}px ${p.y}px, black 100%, transparent 100%)`;
+                        });
+
+                        const maskString = gradients.join(', ');
+
+                        revealedLayerRef.current.style.maskImage = maskString;
+                        revealedLayerRef.current.style.webkitMaskImage = maskString;
+                    }
+
+                    animationFrameId = requestAnimationFrame(loop);
+                };
+
+                loop();
+
+                return () => {
+                    window.removeEventListener('mousemove', handleMove);
+                    window.removeEventListener('touchstart', handleMove);
+                    window.removeEventListener('touchmove', handleMove);
+                    cancelAnimationFrame(animationFrameId);
+                };
+            }, [isMobile]);
+
+            return (
+                React.createElement(React.Fragment, null,
+
+                    // 1. CAPA OSCURA (FONDO)
+                    React.createElement('div', {
+                        className: "fixed inset-0 z-0 bg-cover bg-center transition-all duration-700 ease-in-out",
+                        style: { backgroundImage: `url(${currentBg})` }
+                    }),
+
+                    // 2. CAPA CLARA (REVELADA - Con optimización de hardware)
+                    React.createElement('div', {
+                        ref: revealedLayerRef,
+                        className: "fixed inset-0 z-10 bg-cover bg-center flex flex-col items-center justify-center text-center p-8 transition-all duration-700 ease-in-out",
+                        style: {
+                            backgroundImage: `url(${currentRev})`,
+                            WebkitMaskImage: 'none',
+                            maskImage: 'none',
+                            willChange: 'mask-image', // Optimización clave
+                            transform: 'translateZ(0)' // Forzar GPU
+                        }
+                    },
+                        React.createElement('div', { className: "absolute inset-0 bg-black opacity-40 pointer-events-none" }),
+
+                        // CONTENIDO
+                        React.createElement('div', { className: "relative z-20 flex flex-col items-center w-full h-full justify-center" },
+
+                            // BOTÓN DE CAMBIO DE IMAGEN "ARG"
+                            React.createElement('div', {
+                                onClick: toggleBackground,
+                                className: "mb-8 cursor-pointer select-none arg-toggle",
+                            },
+                                React.createElement('h2', { className: "text-4xl md:text-5xl text-white" }, "VA")
+                            ),
+
+                            // TITULO PRINCIPAL (VACÍO EN CONFIG)
+                            React.createElement('h1', { className: "font-['Cormorant_Garamond'] font-bold leading-none text-white mb-8 select-none pointer-events-none", style: { fontSize: 'clamp(3rem, 10vw, 8rem)' } }, "Vavava Shop"),
+
+                            // MENU PRINCIPAL
+                            React.createElement('div', { className: 'flex justify-center items-start gap-10 md:gap-24 mt-4' },
+                                Object.keys(sections).filter(key => key !== 'home').map(key => {
+                                    const section = sections[key];
+                                    return React.createElement('a', {
+                                        key: key,
+                                        href: section.url,
+                                        className: `nav-link flex flex-col items-center gap-2 text-white group`
+                                    },
+                                        React.createElement(section.icon, { className: 'w-8 h-8 transition-transform group-hover:scale-110' }),
+                                        React.createElement('span', { className: "text-lg md:text-xl" }, section.title)
+                                    );
+                                })
+                            ),
+
+                            // REDES SOCIALES
+                            React.createElement('div', { className: 'flex justify-center items-center gap-6 mt-24' },
+                                socialLinks.map((social, index) => (
+                                    React.createElement('a', {
+                                        key: index,
+                                        href: social.url,
+                                        target: "_blank",
+                                        rel: "noopener noreferrer",
+                                        className: "social-link text-white p-4 rounded-full hover:bg-white/10 transition-all duration-300"
+                                    },
+                                        React.createElement(social.icon, { className: "w-7 h-7" })
+                                    )
+                                ))
+                            )
+                        )
+                    )
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App, null));
+
+        // Init Popup
+        setTimeout(() => document.getElementById('salesPopup').style.display = 'block', 5000);
+
+    </script></body></html>
