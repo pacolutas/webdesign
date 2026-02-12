@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /><title>Mise en Print | miseenprint</title><script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet"><style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            color: #FFFFFF;
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* FLUID BACKGROUND (Fixed) */
+        #root {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: auto;
+            /* Allow interaction with liquid effect */
+        }
+
+        /* CONTENT OVERLAY (Scrollable) */
+        .content-overlay {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 20px;
+            pointer-events: none;
+            /* Let clicks pass through to liquid, but enable on children */
+        }
+
+        .content-box {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .profile-pic-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s;
+            pointer-events: auto;
+        }
+
+        .profile-pic-btn:hover {
+            transform: scale(1.05);
+            border-color: #fff;
+        }
+
+        .profile-pic-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p.bio {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            color: #eee;
+        }
+
+        /* GRID */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.02);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* SALES POPUP STYLES (Standardized) */
+        .sales-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            z-index: 10000;
+            font-family: 'Poppins', sans-serif;
+            animation: slideIn 0.5s ease-out forwards;
+            display: none;
+            /* Initially hidden */
+            pointer-events: auto;
+        }
+
+        .sales-popup h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .sales-popup p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .sales-price {
+            font-size: 1.5rem;
+            color: #222;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .sales-price small {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .sales-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: background 0.3s;
+        }
+
+        .sales-btn:hover {
+            background-color: #333;
+        }
+
+        .sales-btn.secondary {
+            background-color: transparent;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .sales-btn.secondary:hover {
+            background-color: #f5f5f5;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 40px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            pointer-events: auto;
+        }
+    </style></head><body><div id="root"></div><main class="content-overlay"><div class="content-box"><div id="profileTrigger"><div class="profile-pic-btn" onclick="window.dispatchEvent(new CustomEvent('toggle-bg'))"><img src="assets/miseenprint/profile.jpg" alt="Profile"></div></div><h1>Mise en Print</h1><p class="bio">COOKBOOK BAR | COCINA | CAFÉ.                                                       
+📍CDMX. Guanajuato 28, Roma Norte.
+Horarios:
+Lun a dom 9 am - 6 pm</p><div class="grid-container"><div class="grid-item"><img src="assets/miseenprint/post_0.jpg" alt="Post"></div><div class="grid-item"><img src="assets/miseenprint/post_1.jpg" alt="Post"></div><div class="grid-item"><img src="assets/miseenprint/post_2.jpg" alt="Post"></div><div class="grid-item"><img src="assets/miseenprint/post_3.jpg" alt="Post"></div><div class="grid-item"><img src="assets/miseenprint/post_4.jpg" alt="Post"></div><div class="grid-item"><img src="assets/miseenprint/post_5.jpg" alt="Post"></div></div><footer><p>&copy; 2026 Mise en Print. Curado digitalmente.</p></footer></div></main><div class="sales-popup" id="salesPopup"><span class="close-popup" onclick="document.getElementById('salesPopup').style.display='none'">&times;</span><h3>Increíble Web para tu Negocio</h3><p>Hola <strong>Mise en Print</strong>, hemos analizado tu perfil y vemos el potencial de tu marca. Una web
+            profesional como esta aumenta tus reservas y credibilidad.</p><div class="sales-price">
+            $3,000 MXN <small>$5,500</small></div><p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">
+            ✅ Hosting Incluido<br>
+            ✅ 2 Revisiones<br>
+            ❌ Dominio no incluido
+        </p><p style="font-size: 0.85rem; color: #28a745; margin-bottom: 20px; font-weight: bold;">
+            🎁 $500 OFF si nos recomiendas!
+        </p><a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20la%20página%20web%20para%20miseenprint"
+            target="_blank" class="sales-btn">⚡ Obtener esta Web Ahora</a><a href="https://websperronas.mx" target="_blank" class="sales-btn secondary">Nuestro Portafolio</a></div><script type="module">
+        import React from 'https://esm.sh/react@18.3.1';
+        import ReactDOM from 'https://esm.sh/react-dom@18.3.1/client';
+
+        const { useRef, useEffect, useState } = React;
+
+        // --- IMÁGENES (Using Scraped Posts as Fallback for Custom Art) ---
+        // Base: Post 0
+        const BG_IMG = 'assets/miseenprint/post_0.jpg';
+        // Reveal: Post 1 (Ideally more colorful)
+        const REV_IMG = 'assets/miseenprint/post_1.jpg';
+
+        // --- APP ---
+        const App = () => {
+            const revealedLayerRef = useRef(null);
+            const [isToggled, setIsToggled] = useState(false);
+
+            // CONFIGURACIÓN DE FÍSICA MEJORADA (LÍQUIDA)
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+            const TRAIL_LENGTH = isMobile ? 6 : 12;
+            const BASE_RADIUS = isMobile ? 140 : 250; // Bigger radius for background effect
+
+            const points = useRef(Array(TRAIL_LENGTH).fill({ x: window.innerWidth / 2, y: window.innerHeight / 2 }));
+            const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+
+            // Logic: 
+            // Default: BG_IMG visible. Reveal: REV_IMG hidden under mask.
+            // Toggle: Swaps them? Or just changes the set?
+            // Let's make toggle swap the images so Base becomes Reveal and vice versa.
+
+            const currentBg = isToggled ? REV_IMG : BG_IMG;
+            const currentRev = isToggled ? BG_IMG : REV_IMG;
+
+            useEffect(() => {
+                // Listen for external toggle event
+                const toggleHandler = () => setIsToggled(prev => !prev);
+                window.addEventListener('toggle-bg', toggleHandler);
+
+                const handleMove = (e) => {
+                    let clientX, clientY;
+                    if (e.touches && e.touches.length > 0) {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    } else {
+                        clientX = e.clientX;
+                        clientY = e.clientY;
+                    }
+                    mouse.current = { x: clientX, y: clientY };
+                };
+
+                window.addEventListener('mousemove', handleMove);
+                window.addEventListener('touchstart', handleMove, { passive: false });
+                window.addEventListener('touchmove', handleMove, { passive: false });
+
+                let animationFrameId;
+
+                const loop = () => {
+                    const currentPoints = [...points.current];
+                    const leaderEasing = 0.15;
+                    currentPoints[0] = {
+                        x: currentPoints[0].x + (mouse.current.x - currentPoints[0].x) * leaderEasing,
+                        y: currentPoints[0].y + (mouse.current.y - currentPoints[0].y) * leaderEasing
+                    };
+
+                    const trailEasing = 0.20;
+                    for (let i = 1; i < TRAIL_LENGTH; i++) {
+                        const leader = currentPoints[i - 1];
+                        const follower = currentPoints[i];
+                        currentPoints[i] = {
+                            x: follower.x + (leader.x - follower.x) * trailEasing,
+                            y: follower.y + (leader.y - follower.y) * trailEasing
+                        };
+                    }
+                    points.current = currentPoints;
+
+                    if (revealedLayerRef.current) {
+                        const gradients = currentPoints.map((p, i) => {
+                            const scale = 1 - (i / TRAIL_LENGTH) * 0.7;
+                            const radius = BASE_RADIUS * scale;
+                            return `radial-gradient(circle ${radius}px at ${p.x}px ${p.y}px, black 100%, transparent 100%)`;
+                        });
+
+                        const maskString = gradients.join(', ');
+                        revealedLayerRef.current.style.maskImage = maskString;
+                        revealedLayerRef.current.style.webkitMaskImage = maskString;
+                    }
+                    animationFrameId = requestAnimationFrame(loop);
+                };
+
+                loop();
+
+                return () => {
+                    window.removeEventListener('toggle-bg', toggleHandler);
+                    window.removeEventListener('mousemove', handleMove);
+                    window.removeEventListener('touchstart', handleMove);
+                    window.removeEventListener('touchmove', handleMove);
+                    cancelAnimationFrame(animationFrameId);
+                };
+            }, [isMobile]);
+
+            return (
+                React.createElement(React.Fragment, null,
+                    // 1. CAPA OSCURA (FONDO)
+                    React.createElement('div', {
+                        className: "absolute inset-0 z-0 bg-cover bg-center transition-all duration-700 ease-in-out",
+                        style: { backgroundImage: `url(${currentBg})` }
+                    }),
+                    // 2. CAPA CLARA (REVELADA)
+                    React.createElement('div', {
+                        ref: revealedLayerRef,
+                        className: "absolute inset-0 z-10 bg-cover bg-center transition-all duration-700 ease-in-out",
+                        style: {
+                            backgroundImage: `url(${currentRev})`,
+                            WebkitMaskImage: 'none',
+                            maskImage: 'none',
+                            willChange: 'mask-image',
+                            transform: 'translateZ(0)'
+                        }
+                    },
+                        // Optional Dark Overlay on Reveal
+                        React.createElement('div', { className: "absolute inset-0 bg-black opacity-20 pointer-events-none" })
+                    )
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App, null));
+
+        // Init Popup
+        setTimeout(() => document.getElementById('salesPopup').style.display = 'block', 5000);
+
+    </script></body></html>
