@@ -27,7 +27,7 @@
         }
 
         body.light-theme .page-header {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-bottom: 1px solid #eee;
         }
 
@@ -37,6 +37,11 @@
 
         body.light-theme .section-title {
             color: var(--brand-gold);
+        }
+
+        body.light-theme .bg-cream-section {
+            background-color: var(--brand-cream);
+            color: var(--brand-dark);
         }
 
         body.light-theme footer {
@@ -160,6 +165,16 @@
 
         .bg-cream-section {
             background-color: var(--brand-cream);
+            color: var(--brand-dark);
+        }
+
+        /* Dark theme adjustments for gallery section */
+        body:not(.light-theme) #galeria {
+            background-color: #1a1a1a;
+        }
+
+        body:not(.light-theme) #galeria .text-muted {
+            color: #999 !important;
         }
 
         .section-title {
@@ -190,6 +205,17 @@
             background-color: var(--brand-gold);
             color: var(--brand-dark);
             border-color: var(--brand-gold);
+        }
+
+        /* Light theme button adjustments */
+        body.light-theme .btn-brand {
+            color: var(--brand-dark);
+            border-color: var(--brand-dark);
+        }
+
+        body.light-theme .btn-brand:hover {
+            background-color: var(--brand-dark);
+            color: white;
         }
 
         .btn-dark {
