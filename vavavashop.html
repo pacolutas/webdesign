@@ -1,139 +1,430 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /><title>Vavava Shop | vavavashop</title><script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400&display=swap"
-        rel="stylesheet"><style>
-        html,
-        body {
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Vavava Shop | vavavashop</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet"><link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;600&display=swap"
+        rel="stylesheet"><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script><script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script><style>
+        :root {
+            --bg-void: #030303;
+            --text-off: #E5E5E5;
+            --accent-fire: #FF2200;
+            --accent-ice: #00CCFF;
+            --border-dim: rgba(255, 255, 255, 0.1);
+            --glass: rgba(10, 10, 10, 0.8);
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-off);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            --bg-void: #f5f5f5;
+            --text-off: #1a1a1a;
+            --border-dim: rgba(0, 0, 0, 0.1);
+            --glass: rgba(245, 245, 245, 0.8);
+        }
+
+        body.light-theme .hero-video {
+            opacity: 0.2;
+        }
+
+        body.light-theme .vault-img {
+            filter: grayscale(0%);
+        }
+
+        body.light-theme .vault-item:hover .vault-img {
+            filter: grayscale(100%);
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--text-off);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        body:hover .cursor {
+            width: 50px;
+            height: 50px;
+            opacity: 0.5;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        .font-serif {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+        }
+
+        .font-sans {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .display-huge {
+            font-size: clamp(6rem, 15vw, 20rem);
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .section-header {
+            border-top: 1px solid var(--text-off);
+            padding-top: 20px;
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        /* --- NAV --- */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+            mix-blend-mode: difference;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .brand-name {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .brand-name:hover {
+            opacity: 0.7;
+        }
+
+        /* --- SECTIONS COMMON --- */
+        section {
+            position: relative;
+            width: 100%;
+        }
+
+        .spacer-10 {
+            height: 10vh;
+        }
+
+        .spacer-20 {
+            height: 20vh;
+        }
+
+        /* --- 1. HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            filter: grayscale(100%) contrast(1.5);
+        }
+
+        .hero-content {
+            z-index: 2;
+            text-align: center;
+            mix-blend-mode: difference;
+        }
+
+        /* --- 2. HORIZONTAL SCROLL (The Vault) --- */
+        .vault-wrapper {
             overflow: hidden;
-            background-color: #0a0a0a;
-            color: #FFFFFF;
-            font-family: 'Poppins', sans-serif;
-            touch-action: none;
-            -webkit-font-smoothing: antialiased;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+            background: var(--bg-void);
         }
 
-        .nav-link {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.25rem;
-            cursor: inherit;
-            pointer-events: auto;
-            transition: transform 0.2s ease-out, opacity 0.2s;
-            opacity: 0.9;
+        .vault-track {
+            display: flex;
+            width: max-content;
+            padding: 0 10vw;
+        }
+
+        .vault-item {
+            width: 40vw;
+            height: 60vh;
+            margin-right: 5vw;
             position: relative;
-            padding: 10px;
+            border: 1px solid var(--border-dim);
+            transition: 0.3s;
         }
 
-        .nav-link:hover {
+        .vault-img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: 0.5s;
+        }
+
+        .vault-item:hover {
+            border-color: var(--accent-fire);
+        }
+
+        .vault-item:hover .vault-img {
+            filter: grayscale(0%);
+        }
+
+        .vault-info {
+            height: 20%;
+            padding: 20px;
+            border-top: 1px solid var(--border-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- 3. DATA LIST (The Kernel Style) --- */
+        .data-section {
+            padding: 10vh 5vw;
+        }
+
+        .data-row {
+            display: grid;
+            grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-dim);
+            transition: 0.3s;
+            opacity: 0.6;
+            cursor: pointer;
+        }
+
+        .data-row:hover {
             opacity: 1;
-            transform: scale(1.1);
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+            padding-left: 20px;
+            border-bottom-color: var(--text-off);
         }
 
-        .social-link {
-            cursor: inherit;
-            opacity: 0.8;
-            transition: transform 0.2s ease-out, opacity 0.2s;
+        .row-title {
+            font-family: 'Cinzel';
+            font-size: 2rem;
+        }
+
+        /* --- 4. STICKY STACK (Maison Noir Style) --- */
+        .stack-section {
+            padding: 10vh 5vw;
+            display: flex;
+        }
+
+        .stack-text {
+            width: 40%;
+            padding-right: 5rem;
+        }
+
+        .stack-visuals {
+            width: 60%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .social-link:hover {
+        .stack-card {
+            position: absolute;
+            width: 400px;
+            height: 500px;
+            background: #111;
+            border: 1px solid var(--border-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(100px) scale(0.9);
+            transition: 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .stack-card.active {
             opacity: 1;
-            transform: scale(1.2);
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+            transform: translateY(0) scale(1);
+            z-index: 5;
         }
 
-        .arg-toggle {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            cursor: inherit;
-            transition: opacity 0.3s;
+        .stack-card img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
         }
 
-        .arg-toggle:hover {
-            opacity: 0.7;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>'), auto;
+        .text-trigger {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.3;
+            transition: 0.5s;
+            border-left: 2px solid transparent;
+            padding-left: 2rem;
         }
 
-        /* SALES POPUP STYLES (Standardized) */
+        .text-trigger.active {
+            opacity: 1;
+            border-left-color: var(--accent-ice);
+        }
+
+        /* --- 5. PARALLAX MANIFESTO --- */
+        .manifesto {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('assets/vavavashop/post_0.jpg') center/cover fixed;
+            position: relative;
+        }
+
+        .manifesto::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .manifesto-text {
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            font-size: 3rem;
+            font-family: 'Cinzel';
+            line-height: 1.4;
+        }
+
+        /* --- DRAWER (Carrito/Detalle) --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 500px;
+            height: 100%;
+            background: var(--bg-void);
+            border-left: 1px solid var(--border-dim);
+            transform: translateX(100%);
+            transition: 0.6s cubic-bezier(0.8, 0, 0.1, 1);
+            z-index: 999;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-dim);
+        }
+
+        /* --- SALES POPUP --- */
         .sales-popup {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            background-color: #ffffff;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
+            background: white;
             color: #333;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            padding: 25px;
-            z-index: 10000;
-            font-family: 'Poppins', sans-serif;
-            animation: slideIn 0.5s ease-out forwards;
-            display: none;
-            /* Initially hidden */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1002;
+            transform: translateY(150%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 5px solid var(--accent-fire);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sales-popup.active {
+            transform: translateY(0);
         }
 
         .sales-popup h3 {
-            margin-top: 0;
-            font-size: 1.2rem;
-            color: #333;
+            color: #222;
+            font-size: 1.3rem;
             margin-bottom: 10px;
-            font-weight: 600;
+            font-family: 'Cinzel', serif;
         }
 
         .sales-popup p {
             font-size: 0.9rem;
-            line-height: 1.4;
             margin-bottom: 15px;
-            color: #555;
+            line-height: 1.5;
         }
 
         .sales-price {
-            font-size: 1.5rem;
-            color: #222;
+            font-size: 1.8rem;
+            color: var(--accent-fire);
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .sales-price small {
             font-size: 0.9rem;
             text-decoration: line-through;
             color: #999;
-            margin-left: 5px;
+            margin-left: 10px;
         }
 
         .sales-btn {
             display: block;
             width: 100%;
             padding: 12px;
-            background-color: #000;
+            background: #000;
             color: white;
             text-align: center;
-            text-decoration: none;
-            border-radius: 6px;
+            border: none;
+            border-radius: 4px;
             font-weight: 600;
-            margin-bottom: 8px;
+            cursor: pointer;
             transition: background 0.3s;
-        }
-
-        .sales-btn:hover {
-            background-color: #333;
+            text-decoration: none;
+            margin-top: 10px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
 
         .sales-btn.secondary {
-            background-color: transparent;
+            background: #e0e0e0;
             color: #333;
-            border: 1px solid #ccc;
         }
 
-        .sales-btn.secondary:hover {
-            background-color: #f5f5f5;
+        .sales-btn:hover {
+            background: var(--accent-fire);
+            color: white;
         }
 
         .close-popup {
@@ -145,227 +436,228 @@
             color: #999;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateY(100px);
-                opacity: 0;
+        .close-popup:hover {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: 70vh;
             }
 
-            to {
-                transform: translateY(0);
-                opacity: 1;
+            .sales-popup {
+                width: 90%;
+                right: 5%;
+                bottom: 20px;
+            }
+
+            .display-huge {
+                font-size: clamp(3rem, 12vw, 6rem);
+            }
+
+            .stack-section {
+                flex-direction: column;
+            }
+
+            .stack-text,
+            .stack-visuals {
+                width: 100%;
+            }
+
+            .data-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
         }
-    </style></head><body><div id="root"></div><div class="sales-popup" id="salesPopup"><span class="close-popup" onclick="document.getElementById('salesPopup').style.display='none'">&times;</span><h3>Increíble Web para tu Negocio</h3><p>Hola <strong>Vavava Shop</strong>, hemos analizado tu perfil y vemos el potencial de tu marca. Una web
-            profesional como esta aumenta tus reservas y credibilidad.</p><div class="sales-price">
+    </style></head><body><div class="cursor"></div><nav class="nav-bar"><div class="brand-name">Vavava Shop</div><div>MENU</div><div>13888 FANS</div></nav><header class="hero"><img src="assets/vavavashop/assets/vavavashop/profile.jpg" alt="Vavava Shop" class="hero-video"
+            style="object-fit: cover;"><div class="hero-content"><h1 class="display-huge font-serif">VAVAVA</h1><p class="font-sans mt-4" style="letter-spacing: 5px;">CARTELES, VINILOS Y PRINTS</p></div></header><div class="spacer-10"></div><section class="vault-wrapper"><div class="container-fluid px-5 mb-5"><div class="section-header"><h2 class="font-serif display-4">01. La Galería</h2><span>HORIZONTAL_SCROLL</span></div></div><div class="vault-track"><div class="vault-item"
+                onclick="openDrawer('Queremos que disfrutes al máximo de tu experiencia...', 'POST #1', 'assets/vavavashop/assets/vavavashop/post_0.jpg')"><img src="assets/vavavashop/assets/vavavashop/post_0.jpg" class="vault-img"><div class="vault-info"><span class="font-serif">POST #1</span><span></span></div></div><div class="vault-item"
+                onclick="openDrawer('@thehives x @eduardo_ramon_t x @mercadorama 💀👑
+
+Nu...', 'POST #2', 'assets/vavavashop/assets/vavavashop/post_1.jpg')"><img src="assets/vavavashop/assets/vavavashop/post_1.jpg" class="vault-img"><div class="vault-info"><span class="font-serif">POST #2</span><span>426 ❤️</span></div></div><div class="vault-item"
+                onclick="openDrawer('POP UP: @thehives 👑
+
+Encuentra estos dos diseños e...', 'POST #3', 'assets/vavavashop/assets/vavavashop/post_2.jpg')"><img src="assets/vavavashop/assets/vavavashop/post_2.jpg" class="vault-img"><div class="vault-info"><span class="font-serif">POST #3</span><span></span></div></div><div class="vault-item"
+                onclick="openDrawer('ATENCIÓN CDMX.
+@thehives TOMAN @vavavashop .
+11 DE...', 'POST #4', 'assets/vavavashop/assets/vavavashop/post_3.jpg')"><img src="assets/vavavashop/assets/vavavashop/post_3.jpg" class="vault-img"><div class="vault-info"><span class="font-serif">POST #4</span><span>783 ❤️</span></div></div><div class="vault-item"
+                onclick="openDrawer('Muchas gracias a toda la bandita que fue a AB0LISH...', 'POST #5', 'assets/vavavashop/assets/vavavashop/post_4.jpg')"><img src="assets/vavavashop/assets/vavavashop/post_4.jpg" class="vault-img"><div class="vault-info"><span class="font-serif">POST #5</span><span>503 ❤️</span></div></div><div class="vault-item"
+                onclick="openDrawer('La razón suspendida:
+La obra de @mr_mitote y @nico...', 'POST #6', 'assets/vavavashop/assets/vavavashop/post_5.jpg')"><img src="assets/vavavashop/assets/vavavashop/post_5.jpg" class="vault-img"><div class="vault-info"><span class="font-serif">POST #6</span><span></span></div></div></div></section><div class="spacer-20"></div><section class="data-section"><div class="section-header"><h2 class="font-serif display-4">02. El Índice</h2><span>DATA_VIEW</span></div><div class="data-table"><div class="data-row"
+                onclick="openDrawer('Queremos que disfrutes al máximo de tu experiencia en nuestras PopUps. 🌟
+Por eso, creamos esta guía ...', 'POST #1', 'assets/vavavashop/assets/vavavashop/post_0.jpg')"><span class="text-muted">001</span><span class="row-title">POST 1</span><span>---</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('@thehives x @eduardo_ramon_t x @mercadorama 💀👑
+
+Nuevamente recibimos a nuestros queridos Hives con u...', 'POST #2', 'assets/vavavashop/assets/vavavashop/post_1.jpg')"><span class="text-muted">002</span><span class="row-title">POST 2</span><span>426 LIKES</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('POP UP: @thehives 👑
+
+Encuentra estos dos diseños exclusivos de t-shirt, disponibles sólo hoy de 1 a ...', 'POST #3', 'assets/vavavashop/assets/vavavashop/post_2.jpg')"><span class="text-muted">003</span><span class="row-title">POST 3</span><span>---</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('ATENCIÓN CDMX.
+@thehives TOMAN @vavavashop .
+11 DE FEBRERO
+
+Un POP UP OFICIAL como solo The Hives sa...', 'POST #4', 'assets/vavavashop/assets/vavavashop/post_3.jpg')"><span class="text-muted">004</span><span class="row-title">POST 4</span><span>783 LIKES</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('Muchas gracias a toda la bandita que fue a AB0LISH, la pasamos increíble, gracias a @mosaicosonidero...', 'POST #5', 'assets/vavavashop/assets/vavavashop/post_4.jpg')"><span class="text-muted">005</span><span class="row-title">POST 5</span><span>503 LIKES</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('La razón suspendida:
+La obra de @mr_mitote y @nicolas.barrome.forgues nos visito en la tienda como p...', 'POST #6', 'assets/vavavashop/assets/vavavashop/post_5.jpg')"><span class="text-muted">006</span><span class="row-title">POST 6</span><span>---</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('UZZA nuevo collage parte de la exposición que presentó este domingo 8 en @vavavashop de 2 de la tard...', 'POST #7', 'assets/vavavashop/assets/vavavashop/post_6.jpg')"><span class="text-muted">007</span><span class="row-title">POST 7</span><span>114 LIKES</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('AB0LISH, mi nueva exposición 😲 que emoción, les espero el domingo 8 de febrero en @vavavashop , nuev...', 'POST #8', 'assets/vavavashop/assets/vavavashop/post_7.jpg')"><span class="text-muted">008</span><span class="row-title">POST 8</span><span>374 LIKES</span><span>INSTAGRAM</span><span class="text-end">VER</span></div><div class="data-row"
+                onclick="openDrawer('Uno de los primeros discos donde @skinnyflakk cruza rap, R&B y pop sin seguir una sola fórmula.
+a ne...', 'POST #9', 'assets/vavavashop/assets/vavavashop/post_8.jpg')"><span class="text-muted">009</span><span class="row-title">POST 9</span><span>---</span><span>INSTAGRAM</span><span class="text-end">VER</span></div></div></section><section class="stack-section" id="stack-trigger"><div class="stack-text"><div class="text-trigger active" data-index="0"><h3 class="font-serif display-3">Cultura<br>Visual</h3><p class="mt-4">Carteles, Vinilos y Prints.</p></div><div class="text-trigger" data-index="1"><h3 class="font-serif display-3">Arte<br>Urbano</h3><p class="mt-4">Desde el Centro de CDMX, llevamos arte y música a las calles.</p></div><div class="text-trigger" data-index="2"><h3 class="font-serif display-3">Comunidad<br>Creativa</h3><p class="mt-4">Mercadorama y FRMLL Club: espacios donde converge la cultura.</p></div></div><div class="stack-visuals"><div class="stack-card active" id="card-0"><img src="assets/vavavashop/post_1.jpg"></div><div class="stack-card" id="card-1"><img src="assets/vavavashop/post_3.jpg"></div><div class="stack-card" id="card-2"><img src="assets/vavavashop/post_5.jpg"></div></div></section><div class="spacer-10"></div><section class="manifesto"><div class="manifesto-text" data-speed="0.1">
+            "NO VENDEMOS POSTERS.<br>
+            VENDEMOS <span style="color: var(--accent-ice)">CULTURA</span>."
+        </div></section><footer
+        style="padding: 100px 50px; border-top: 1px solid var(--text-off); display: flex; justify-content: space-between;"><div><h2 class="font-serif display-4">Vavava Shop</h2><p class="text-muted mt-3">13888 SEGUIDORES</p></div><div style="text-align: right;"><a href="https://instagram.com/vavavashop" target="_blank"
+                style="color: var(--text-off); display: block; margin-bottom: 10px;">INSTAGRAM</a><a href="https://www.mercadorama.com.mx" target="_blank"
+                style="color: var(--text-off); display: block; margin-bottom: 10px;">MERCADORAMA</a><a href="https://www.instagram.com/frmllclub/" target="_blank"
+                style="color: var(--text-off); display: block;">FRMLL CLUB</a></div></footer><div class="drawer" id="drawer"><button onclick="closeDrawer()"
+            style="background:none; border:none; color:var(--text-off); font-size: 2rem; position:absolute; top:20px; right:20px; cursor: pointer;">✕</button><div style="margin-top: 60px;"><img src="" id="drawer-img" class="drawer-img"><h2 class="font-serif display-5" id="drawer-title">TITLE</h2><p class="text-muted" id="drawer-cat">Category</p><hr style="border-color: var(--border-dim); margin: 30px 0;"><p id="drawer-caption">Descripción del post...</p></div></div><div class="sales-popup" id="salesPopup"><span class="close-popup" onclick="closePopup()">&times;</span><h3>Web Profesional para tu Negocio</h3><p>Hola <strong>Vavava Shop</strong>, hemos analizado tu perfil y vemos el potencial de tu marca. Una web
+            profesional como esta aumenta tus reservas y credibilidad.</p><p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">
+            💼 <strong>Incluye personalización profesional:</strong> Un programador experto adaptará el diseño final
+            según tus necesidades específicas.
+        </p><div class="sales-price">
             $3,000 MXN <small>$5,500</small></div><p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">
             ✅ Hosting Incluido<br>
             ✅ 2 Revisiones<br>
             ❌ Dominio no incluido
         </p><p style="font-size: 0.85rem; color: #28a745; margin-bottom: 20px; font-weight: bold;">
             🎁 $500 OFF si nos recomiendas!
-        </p><a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20la%20página%20web%20para%20vavavashop"
-            target="_blank" class="sales-btn">⚡ Obtener esta Web Ahora</a><a href="https://websperronas.mx" target="_blank" class="sales-btn secondary">Nuestro Portafolio</a></div><script type="module">
-        import React from 'https://esm.sh/react@18.3.1';
-        import ReactDOM from 'https://esm.sh/react-dom@18.3.1/client';
+        </p><a href="https://wa.me/524623784543?text=Hola,%20estoy%20interesado%20en%20la%20página%20web%20de%20mi%20negocio.%20¿Me%20pueden%20dar%20más%20información?"
+            target="_blank" class="sales-btn">⚡ Obtener esta Web</a><a href="https://alterlabgen.lat/colmena.html" target="_blank" class="sales-btn secondary">Ver Ejemplos</a></div><script>
+        // 1. LENIS SMOOTH SCROLL
+        const lenis = new Lenis({
+            duration: 1.5,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true
+        });
 
-        const { useRef, useEffect, useState } = React;
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
 
-        // --- ICONOS DE SECCIONES (Simple Placeholders for now) ---
-        const LinkIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 512 512", ...props }, React.createElement('path', { fill: "currentColor", d: "M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.99 74.267-2.28 101.961 29.352 29.352 75.3 26.519 104.226-2.408l67.2-67.2c27.993-27.993 27.993-73.452 0-101.445-5.877-5.877-13.682-9.115-21.996-9.115-8.314 0-16.119 3.238-21.996 9.115l-17.519 17.519c-9.764 9.764-25.592 9.764-35.355 0-9.763-9.763-9.763-25.592 0-35.355l17.519-17.519c11.754-11.754 27.359-18.225 43.953-18.225 16.594 0 32.199 6.471 43.953 18.225 35.539 35.539 35.539 93.243-.001 128.784zM470.535 41.257l-67.2-67.2c-59.27-59.27-155.699-59.27-214.96 0-9.764 9.764-9.764 25.592 0 35.355 9.763 9.763 25.592 9.763 35.355 0 26.711-26.711 72.844-27.701 101.96-2.279l13.087 13.087c4.35 4.35 5.769 10.79 3.783 16.612-5.864 17.194-9.042 34.999-9.69 52.721-.508 13.906-17.454 20.446-27.294 10.606l-37.106-37.106c-59.271-59.259-59.271-155.699-.001-214.959z" }));
+        gsap.registerPlugin(ScrollTrigger);
 
-        const sections = {
-            home: { title: "VAVAVASHOP" },
-        };
+        // 2. CURSOR FOLLOWER
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-        
-        sections.mercadorama = { title: "Mercadorama", url: 'https://www.mercadorama.com.mx', icon: LinkIcon };
-        sections.frmllclub = { title: "FRMLL Club", url: 'https://www.instagram.com/frmllclub/', icon: LinkIcon };
-        
+        // 3. THEME TOGGLE ON BRAND NAME
+        const brandName = document.querySelector('.brand-name');
+        const body = document.body;
 
-        
+        // Check for saved theme preference or default to dark
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-theme');
+        }
 
-        const socialLinks = [
-            { url: 'https://instagram.com/vavavashop', icon: LinkIcon }, // Fallback icon
-        ];
+        brandName.addEventListener('click', function (e) {
+            e.preventDefault();
+            body.classList.toggle('light-theme');
 
-        // --- IMÁGENES (Dynaimc from Jinja) ---
-        // Background Set 1: Profile Pic + Post 0
-        const BG_SET_1 = 'assets/vavavashop/profile.jpg';
-        const REV_SET_1 = 'assets/vavavashop/post_0.jpg';
+            // Save preference
+            if (body.classList.contains('light-theme')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
 
-        // Background Set 2: Post 1 + Post 2
-        const BG_SET_2 = 'assets/vavavashop/post_1.jpg';
-        const REV_SET_2 = 'assets/vavavashop/post_2.jpg';
+        // 4. HORIZONTAL SCROLL (Section 2)
+        const vaultTrack = document.querySelector('.vault-track');
+        const getScrollAmount = () => -(vaultTrack.scrollWidth - window.innerWidth);
 
-        // --- APP ---
-        const App = () => {
-            const revealedLayerRef = useRef(null);
-            const [bgIndex, setBgIndex] = useState(0);
+        const tween = gsap.to(vaultTrack, {
+            x: getScrollAmount,
+            ease: "none"
+        });
 
-            // CONFIGURACIÓN DE FÍSICA MEJORADA (LÍQUIDA)
-            const isMobile = window.matchMedia("(max-width: 768px)").matches;
-            // Estela más larga para efecto líquido
-            const TRAIL_LENGTH = isMobile ? 6 : 12;
-            // Radio ligeramente mayor
-            const BASE_RADIUS = isMobile ? 140 : 200;
+        ScrollTrigger.create({
+            trigger: ".vault-wrapper",
+            start: "top top",
+            end: () => `+=${vaultTrack.scrollWidth - window.innerWidth}`,
+            pin: true,
+            animation: tween,
+            scrub: 1,
+            invalidateOnRefresh: true
+        });
 
-            const points = useRef(Array(TRAIL_LENGTH).fill({ x: window.innerWidth / 2, y: window.innerHeight / 2 }));
-            const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+        // 5. STICKY STACK LOGIC (Section 4)
+        const texts = document.querySelectorAll('.text-trigger');
+        const cards = document.querySelectorAll('.stack-card');
 
-            // Selección de imágenes según el estado
-            const currentBg = bgIndex === 0 ? BG_SET_1 : BG_SET_2;
-            const currentRev = bgIndex === 0 ? REV_SET_1 : REV_SET_2;
+        texts.forEach((text, i) => {
+            ScrollTrigger.create({
+                trigger: text,
+                start: "top center",
+                end: "bottom center",
+                onToggle: (self) => {
+                    if (self.isActive) {
+                        // Reset all
+                        texts.forEach(t => t.classList.remove('active'));
+                        cards.forEach(c => c.classList.remove('active'));
 
-            const toggleBackground = () => {
-                setBgIndex(prev => prev === 0 ? 1 : 0);
-            };
-
-            useEffect(() => {
-                const handleMove = (e) => {
-                    let clientX, clientY;
-                    if (e.touches && e.touches.length > 0) {
-                        clientX = e.touches[0].clientX;
-                        clientY = e.touches[0].clientY;
-                    } else {
-                        clientX = e.clientX;
-                        clientY = e.clientY;
+                        // Active current
+                        text.classList.add('active');
+                        if (cards[i]) cards[i].classList.add('active');
                     }
-                    mouse.current = { x: clientX, y: clientY };
-                };
+                }
+            });
+        });
 
-                window.addEventListener('mousemove', handleMove);
-                window.addEventListener('touchstart', handleMove, { passive: false });
-                window.addEventListener('touchmove', handleMove, { passive: false });
+        // 6. PARALLAX TEXT MANIFESTO
+        gsap.to(".manifesto-text", {
+            yPercent: -50,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".manifesto",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
 
-                let animationFrameId;
+        // 7. DRAWER FUNCTIONS
+        const drawer = document.getElementById('drawer');
+        function openDrawer(caption, cat, img) {
+            document.getElementById('drawer-title').innerText = cat;
+            document.getElementById('drawer-cat').innerText = 'Instagram Post';
+            document.getElementById('drawer-caption').innerText = caption;
+            document.getElementById('drawer-img').src = img;
+            drawer.classList.add('open');
+        }
+        function closeDrawer() {
+            drawer.classList.remove('open');
+        }
 
-                const loop = () => {
-                    const currentPoints = [...points.current];
+        // 8. SALES POPUP LOGIC - Show only at the end of the page
+        const footer = document.querySelector('footer');
+        const salesPopup = document.getElementById('salesPopup');
+        let popupShown = false;
 
-                    // Líder (puntero) rápido
-                    const leaderEasing = 0.15;
-                    currentPoints[0] = {
-                        x: currentPoints[0].x + (mouse.current.x - currentPoints[0].x) * leaderEasing,
-                        y: currentPoints[0].y + (mouse.current.y - currentPoints[0].y) * leaderEasing
-                    };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !popupShown) {
+                    salesPopup.classList.add('active');
+                    popupShown = true;
+                }
+            });
+        }, {
+            threshold: 0.1 // Trigger when 10% of footer is visible
+        });
 
-                    // Estela más suave (viscosidad)
-                    const trailEasing = 0.20;
-                    for (let i = 1; i < TRAIL_LENGTH; i++) {
-                        const leader = currentPoints[i - 1];
-                        const follower = currentPoints[i];
-                        currentPoints[i] = {
-                            x: follower.x + (leader.x - follower.x) * trailEasing,
-                            y: follower.y + (leader.y - follower.y) * trailEasing
-                        };
-                    }
+        if (footer) {
+            observer.observe(footer);
+        }
 
-                    points.current = currentPoints;
-
-                    if (revealedLayerRef.current) {
-                        const gradients = currentPoints.map((p, i) => {
-                            // Decaimiento optimizado para estelas largas
-                            const scale = 1 - (i / TRAIL_LENGTH) * 0.7;
-                            const radius = BASE_RADIUS * scale;
-                            return `radial-gradient(circle ${radius}px at ${p.x}px ${p.y}px, black 100%, transparent 100%)`;
-                        });
-
-                        const maskString = gradients.join(', ');
-
-                        revealedLayerRef.current.style.maskImage = maskString;
-                        revealedLayerRef.current.style.webkitMaskImage = maskString;
-                    }
-
-                    animationFrameId = requestAnimationFrame(loop);
-                };
-
-                loop();
-
-                return () => {
-                    window.removeEventListener('mousemove', handleMove);
-                    window.removeEventListener('touchstart', handleMove);
-                    window.removeEventListener('touchmove', handleMove);
-                    cancelAnimationFrame(animationFrameId);
-                };
-            }, [isMobile]);
-
-            return (
-                React.createElement(React.Fragment, null,
-
-                    // 1. CAPA OSCURA (FONDO)
-                    React.createElement('div', {
-                        className: "fixed inset-0 z-0 bg-cover bg-center transition-all duration-700 ease-in-out",
-                        style: { backgroundImage: `url(${currentBg})` }
-                    }),
-
-                    // 2. CAPA CLARA (REVELADA - Con optimización de hardware)
-                    React.createElement('div', {
-                        ref: revealedLayerRef,
-                        className: "fixed inset-0 z-10 bg-cover bg-center flex flex-col items-center justify-center text-center p-8 transition-all duration-700 ease-in-out",
-                        style: {
-                            backgroundImage: `url(${currentRev})`,
-                            WebkitMaskImage: 'none',
-                            maskImage: 'none',
-                            willChange: 'mask-image', // Optimización clave
-                            transform: 'translateZ(0)' // Forzar GPU
-                        }
-                    },
-                        React.createElement('div', { className: "absolute inset-0 bg-black opacity-40 pointer-events-none" }),
-
-                        // CONTENIDO
-                        React.createElement('div', { className: "relative z-20 flex flex-col items-center w-full h-full justify-center" },
-
-                            // BOTÓN DE CAMBIO DE IMAGEN "ARG"
-                            React.createElement('div', {
-                                onClick: toggleBackground,
-                                className: "mb-8 cursor-pointer select-none arg-toggle",
-                            },
-                                React.createElement('h2', { className: "text-4xl md:text-5xl text-white" }, "VA")
-                            ),
-
-                            // TITULO PRINCIPAL (VACÍO EN CONFIG)
-                            React.createElement('h1', { className: "font-['Cormorant_Garamond'] font-bold leading-none text-white mb-8 select-none pointer-events-none", style: { fontSize: 'clamp(3rem, 10vw, 8rem)' } }, "Vavava Shop"),
-
-                            // MENU PRINCIPAL
-                            React.createElement('div', { className: 'flex justify-center items-start gap-10 md:gap-24 mt-4' },
-                                Object.keys(sections).filter(key => key !== 'home').map(key => {
-                                    const section = sections[key];
-                                    return React.createElement('a', {
-                                        key: key,
-                                        href: section.url,
-                                        className: `nav-link flex flex-col items-center gap-2 text-white group`
-                                    },
-                                        React.createElement(section.icon, { className: 'w-8 h-8 transition-transform group-hover:scale-110' }),
-                                        React.createElement('span', { className: "text-lg md:text-xl" }, section.title)
-                                    );
-                                })
-                            ),
-
-                            // REDES SOCIALES
-                            React.createElement('div', { className: 'flex justify-center items-center gap-6 mt-24' },
-                                socialLinks.map((social, index) => (
-                                    React.createElement('a', {
-                                        key: index,
-                                        href: social.url,
-                                        target: "_blank",
-                                        rel: "noopener noreferrer",
-                                        className: "social-link text-white p-4 rounded-full hover:bg-white/10 transition-all duration-300"
-                                    },
-                                        React.createElement(social.icon, { className: "w-7 h-7" })
-                                    )
-                                ))
-                            )
-                        )
-                    )
-                )
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(App, null));
-
-        // Init Popup
-        setTimeout(() => document.getElementById('salesPopup').style.display = 'block', 5000);
+        function closePopup() {
+            salesPopup.classList.remove('active');
+        }
 
     </script></body></html>
