@@ -10,22 +10,66 @@
 
         body {
             font-family: 'Lato', sans-serif;
-            color: var(--brand-dark);
-            background-color: #ffffff;
             overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Dark Theme (Default) */
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            background-color: #ffffff;
+            color: var(--brand-dark);
+        }
+
+        body.light-theme .page-header {
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.light-theme .nav-link {
+            color: var(--brand-dark) !important;
+        }
+
+        body.light-theme .section-title {
+            color: var(--brand-gold);
+        }
+
+        body.light-theme footer {
+            background: var(--brand-dark);
         }
 
         /* Header Minimalista */
         .page-header {
-            background: white;
-            border-bottom: 1px solid #eee;
+            background: rgba(26, 26, 26, 0.95);
+            border-bottom: 1px solid #333;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        body.light-theme .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #eee;
         }
 
         .navbar-brand {
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
             font-weight: 700;
+            color: var(--brand-gold) !important;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .navbar-brand:hover {
+            color: var(--brand-accent) !important;
+        }
+
+        body.light-theme .navbar-brand {
             color: var(--brand-dark) !important;
         }
 
@@ -34,12 +78,16 @@
             font-size: 0.85rem;
             font-weight: 500;
             letter-spacing: 1px;
-            color: var(--brand-dark) !important;
+            color: #e0e0e0 !important;
             transition: color 0.3s;
         }
 
         .nav-link:hover {
             color: var(--brand-gold) !important;
+        }
+
+        body.light-theme .nav-link {
+            color: var(--brand-dark) !important;
         }
 
         /* Hero Section */
@@ -119,6 +167,10 @@
             font-size: 2.5rem;
             margin-bottom: 30px;
             color: var(--brand-gold);
+        }
+
+        body.light-theme .text-section {
+            color: var(--brand-dark);
         }
 
         .btn-brand {
@@ -304,7 +356,10 @@
                                     style="color: var(--brand-accent);">@budapestcafemx</a></p></div><a href="https://maps.google.com/?q=Av.+Tamaulipas+130+Col.+Condesa+CDMX" target="_blank"
                             class="btn btn-dark mt-3">Ver en Mapa</a></div><div class="col-lg-6" data-aos="fade-right"><img src="assets/budapestcafemx/post_2.jpg"
                             class="img-fluid" alt="Ubicación"></div></div></div></section></main><footer><div class="container-xl"><div class="row g-4"><div class="col-lg-4"><h5>Budapest Cafe Cukrászda</h5><p class="small">Av. Tamaulipas 130 Col. Condesa CDMX Lun-Dom: 11am - 10pm</p></div><div class="col-md-4"><h5>Enlaces</h5><a href="https://www.instagram.com/budapestcafemx" target="_blank">Instagram</a><a href="#galeria">Galería</a><a href="#ubicacion">Ubicación</a></div><div class="col-md-4"><h5>Síguenos</h5><p class="small">20,996 seguidores en Instagram</p><a href="https://www.instagram.com/budapestcafemx" target="_blank">@budapestcafemx</a></div></div><div class="text-center mt-5 pt-4 border-top border-secondary"><p class="small">© 2026 Budapest Cafe Cukrászda. Diseñado con excelencia.</p></div></div></footer><div class="sales-popup" id="salesPopup"><span class="close-popup" onclick="closePopup()">&times;</span><h3>Web Profesional para tu Negocio</h3><p>Hola <strong>Budapest Cafe Cukrászda</strong>, hemos analizado tu perfil y vemos el potencial de tu marca. Una web
-            profesional como esta aumenta tus reservas y credibilidad.</p><div class="sales-price">
+            profesional como esta aumenta tus reservas y credibilidad.</p><p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">
+            💼 <strong>Incluye personalización profesional:</strong> Un programador experto adaptará el diseño final
+            según tus necesidades específicas.
+        </p><div class="sales-price">
             $3,000 MXN <small>$5,500</small></div><p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">
             ✅ Hosting Incluido<br>
             ✅ 2 Revisiones<br>
@@ -313,6 +368,28 @@
             🎁 $500 OFF si nos recomiendas!
         </p><a href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20la%20página%20web%20para%20budapestcafemx"
             target="_blank" class="sales-btn">⚡ Obtener esta Web</a><a href="https://websperronas.mx" target="_blank" class="sales-btn secondary">Nuestro Portafolio</a></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script><script>
+        // Theme Toggle on Brand Name Click
+        const brandName = document.querySelector('.navbar-brand');
+        const body = document.body;
+
+        // Check for saved theme preference or default to dark
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-theme');
+        }
+
+        brandName.addEventListener('click', function (e) {
+            e.preventDefault();
+            body.classList.toggle('light-theme');
+
+            // Save preference
+            if (body.classList.contains('light-theme')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
         // Inicializar animaciones
         AOS.init({
             duration: 800,
