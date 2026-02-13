@@ -397,22 +397,27 @@
             once: true
         });
 
-        // Sales Popup Logic
-        window.addEventListener('scroll', function () {
-            var scrollPosition = window.scrollY;
-            var windowHeight = window.innerHeight;
-            var documentHeight = document.body.offsetHeight;
+        // Sales Popup Logic - Show only at the end of the page
+        const footer = document.querySelector('footer');
+        const salesPopup = document.getElementById('salesPopup');
+        let popupShown = false;
 
-            if (scrollPosition > (documentHeight - windowHeight) * 0.4) {
-                document.getElementById('salesPopup').classList.add('active');
-            }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !popupShown) {
+                    salesPopup.classList.add('active');
+                    popupShown = true;
+                }
+            });
+        }, {
+            threshold: 0.1 // Trigger when 10% of footer is visible
         });
 
-        function closePopup() {
-            document.getElementById('salesPopup').classList.remove('active');
+        if (footer) {
+            observer.observe(footer);
         }
 
-        setTimeout(function () {
-            document.getElementById('salesPopup').classList.add('active');
-        }, 8000);
+        function closePopup() {
+            salesPopup.classList.remove('active');
+        }
     </script></body></html>
